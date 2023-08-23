@@ -1,9 +1,3 @@
-Dear Candidate,
-
-Congratulations on successfully clearing the skill test in the first round of our interview process for the Software Engineer role . Your performance in the initial round has impressed us, and we are excited to see your skills shine even further.
-
-In the next stage of our selection process, we have an assessment designed to evaluate your technical expertise and problem-solving abilities. This assessment revolves around developing a Task Management Web Application. Please find the details below:
-
 Project: Task Management Web Application
 
 Project Description
@@ -30,23 +24,3 @@ Bonus Challenges
 2. Add due dates and notifications for tasks.
 3. Use state management in the frontend (e.g., Redux) for a more organized UI.
 4. Implement real-time updates using WebSockets.
-
-Evaluation Criteria
-1. Code quality: Clear, well-organized, and maintainable code.
-2. UI/UX: User-friendly design, responsiveness, and attention to detail.
-3. Functionality: Successful implementation of all required features.
-4. Security: Proper handling of user authentication and data protection.
-5. Technology stack: Effective use of frontend and backend technologies.
-6. Problem-solving skills: Ability to tackle challenges and implement advanced features.
-
-Submission and Interview
-Please submit your project code by [26th Aug, 6:00PM] along with a README file explaining the setup, features, and any additional notes. Host your code on GitHub and send us the GitHub link of the assessment
-
-The completion of this assessment will qualify you for the next and final stage of our interview process. We look forward to reviewing your project and assessing your capabilities further.
-
-Thank you for your dedication and effort in this process. Good luck!
-
-Best regards,
-
-Farheen Zeya
-Program Manger @Fundinit Portfolio Company
