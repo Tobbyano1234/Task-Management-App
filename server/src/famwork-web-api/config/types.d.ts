@@ -7,11 +7,18 @@ export type ConfigTypes = {
             mongodb: IMongodb;
         };
     };
+    credentials: {
+        jwt: IJWT;
+    },
     defaults: {
         saltWorker: number;
     }
 };
 
+interface IJWT {
+    secret: string;
+    expirationInterval: string;
+}
 
 interface IMongodb {
     mongooseDebug: boolean;
@@ -19,7 +26,6 @@ interface IMongodb {
     secureHost: string;
     testUri: string;
 }
-
 
 export interface ErrorResponseInterface {
     message: string;

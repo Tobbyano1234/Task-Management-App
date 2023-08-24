@@ -15,7 +15,7 @@ function createServer() {
         .use(helmet({ dnsPrefetchControl: false, frameguard: false, ieNoOpen: false }))
         .use(cors({ credentials: true, origin: true }))
         .use(cookieParser())
-        .use(logger("tiny"))
+        .use(logger("dev"))
         .use(express.json())
         .use(express.urlencoded({ extended: true }))
         .use("/api/v1", v1Routes)

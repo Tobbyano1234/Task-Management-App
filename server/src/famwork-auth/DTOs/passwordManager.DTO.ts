@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { User} from "../../famwork-entities";
 
 export type VerifyUserPasswordDTO = {
@@ -27,7 +28,7 @@ export type ChangeUserPasswordDTO = {
 };
 
 export type ChangeAdminPasswordDTO = {
-  adminID: string;
+  adminID: string | ObjectId;
   newPassword: string;
   confirmPassword: string; 
 };
@@ -38,6 +39,6 @@ export type VerifyUserEmailDTO = {
 };
 
 export type VerifyAdminEmailDTO = {
-  adminID: string,
+  adminID: string | ObjectId,
   email: string,
 };
