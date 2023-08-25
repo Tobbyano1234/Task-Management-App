@@ -4,7 +4,7 @@ import { issueToken } from "../plugins";
 import { LocalSignInDTO } from "../DTOs/signIn.DTO";
 import { AccountType } from '../../typings/Account.types';
 import { getAdminService } from '../../famwork-accounts/admin/services';
-import { ModelNames, GeneralModel } from '../../glide-entities';
+import { ModelNames, GeneralModel } from '../../famwork-entities';
 import { Types } from 'mongoose';
 import { AdminMetaDataGeneral } from '../../typings/Admin.types';
 

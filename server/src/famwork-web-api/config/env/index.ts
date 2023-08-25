@@ -31,8 +31,20 @@ export const config: ConfigTypes = {
             expirationInterval: envVariables.JWT_EXPIRY,
         },
     },
+    client:{
+        mediaClient:{},
+        mailClient:{
+            nodemailer:{
+              authMail:envVariables.AUTH_EMAIL,
+              authPassword:envVariables.AUTH_PASSWORD,
+            }
+        }
+    },
     defaults:{
         saltWorker: envVariables.SALT_WORKER,
+        // mailInfo:{
+
+        // }
     }
 };
 

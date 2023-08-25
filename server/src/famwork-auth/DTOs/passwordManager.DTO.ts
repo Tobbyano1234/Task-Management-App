@@ -9,6 +9,14 @@ export type VerifyUserPasswordDTO = {
   };
 };
 
+export type VerifyAdminPasswordDTO = {
+  oldPassword: string;
+  email: string;  
+  computedProps?: {
+    _user?: User;
+  };
+};
+
 export type ResetPasswordDTO = {
   otp: string;
   email: string;

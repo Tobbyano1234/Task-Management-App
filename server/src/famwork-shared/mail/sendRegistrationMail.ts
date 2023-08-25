@@ -1,4 +1,4 @@
-import { sendMailByClient } from "../../glide-messaging/services/mail";
+import { sendMailByClient } from "../../famwork-messaging/services/mail";
 import { nameFormat } from "../misc";
 import { MailAccount } from "./typings";
 
@@ -7,7 +7,7 @@ const sendMail = sendMailByClient();
 export const sendRegistrationMail = async (account: MailAccount) => {
   await sendMail({
     to: account.email,
-    subject: `Glide Account Created ${account.firstName + ' ' + (account.lastName || " ")}`,
+    subject: `Account Created ${account.firstName + ' ' + (account.lastName || " ")}`,
     text: `This is to notify you that you just registered an account with us.`,
     templateId: 'account creation',
     templateData: {

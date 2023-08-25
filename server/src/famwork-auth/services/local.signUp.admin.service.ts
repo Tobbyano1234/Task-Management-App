@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 import { LocalSignUpAdminDTO } from '../DTOs/signUp.DTO';
-import { Admin, AdminModel, GeneralModel, ModelNames } from '../../glide-entities';
+import { Admin, AdminModel, GeneralModel, ModelNames } from '../../famwork-entities';
 import { issueOtp } from '../plugins';
 import { AccountSignType, AccountStatus } from '../../typings/Account.types';
 import { sendOtpMail } from '../../famwork-shared/mail';

@@ -1,6 +1,6 @@
 import { nameFormat } from '../misc/name';
 import { MailAccount } from './typings';
-import { sendMailByClient } from '../../glide-messaging/services/mail';
+import { sendMailByClient } from '../../famwork-messaging/services/mail';
 
 const sendMail = sendMailByClient();
 
