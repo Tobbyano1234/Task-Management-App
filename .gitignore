@@ -88,7 +88,7 @@ web_modules/
 out
 dist
 build
-.DS_Store
+._.DS_Store
 
 # Nuxt.js build / generate output
 .nuxt

@@ -1,15 +1,82 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import TaskCard from "./TaskCard/TaskCard";
+import Button from "./common/Button";
+import CreateTaskModal from "./Modal/CreateModal";
+import InputField from "./common/Input";
 
 const TaskList = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Fragment>
       <main className="container my-5 mx-10">
-        <div className="flex items-center justify-between items-center space-x-4">
-          <button className="bg-indigo-600 font-custom text-sm text-white rounded-lg px-5 py-2 hover:bg-indigo-900">
-            Create Task
-          </button>
+        <div className="flex items-center justify-between space-x-4">
+          <Button
+            className="bg-indigo-600 font-custom text-sm text-white rounded-lg px-5 py-2 hover:bg-indigo-900"
+            type="submit"
+            title="Create Task"
+            onClick={openModal}
+          />
 
+          <CreateTaskModal isOpen={isModalOpen} onRequestClose={closeModal}>
+            <h2 className="text-lg font-semibold mb-4">Create New Task</h2>
+            {/* Add your form fields here */}
+            {/* e.g., Title, Description, Due Date, etc. */}
+            {/* Include form elements and submit button */}
+            <form className="mt-6 space-y-6" action="#" method="POST">
+              <InputField
+                labelName="Title"
+                htmlFor="title"
+                labelClassName="block text-sm font-medium leading-6 text-gray-900"
+                type="text"
+                name="title"
+                placeholder="Enter task title"
+                required
+              />
+
+              <div className="mt-4">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows={4}
+                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200 focus:border-indigo-300 sm:text-sm"
+                  placeholder="Enter task description"
+                  required
+                />
+              </div>
+
+              <InputField
+                labelName="Due Date"
+                htmlFor="dueDate"
+                labelClassName="block text-sm font-medium leading-6 text-gray-900"
+                type="date"
+                name="dueDate"
+                required
+                placeholder={""}
+              />
+
+              {/* Add more input fields for completionDate and status */}
+              {/* Remember to customize according to your needs */}
+
+              <div>
+                <Button type="submit" title="Create Task" />
+              </div>
+            </form>
+          </CreateTaskModal>
           <div className="flex items-center border rounded-md p-2">
             <input
               type="text"
