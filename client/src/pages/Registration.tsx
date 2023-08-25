@@ -1,6 +1,7 @@
 import InputField from "../components/common/Input";
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/common/Button";
 
 interface IUser {
   firstName: string;
@@ -8,11 +9,11 @@ interface IUser {
   phoneNumber: string;
   email: string;
   password: string;
-  comfirmPassword: string;
+  confirmPassword: string;
 }
 
 const UserRegistrationForm = (): JSX.Element => {
-  const [formData, setFormData] = useState<IUser | null>({});
+  // const [formData, setFormData] = useState<IUser | null>({});
 
   // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   console.log(formData);
@@ -93,12 +94,7 @@ const UserRegistrationForm = (): JSX.Element => {
                 required
               />
               <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign in
-                </button>
+                <Button type="submit" title="Register" />
               </div>
             </form>
            

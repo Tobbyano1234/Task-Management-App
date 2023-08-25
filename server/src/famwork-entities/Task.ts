@@ -9,12 +9,12 @@ export class Task extends Document {
     description: string;
     dueDate: Date;
     completionDate: Date;
+    status: TaskStatus;
     notifications: [{
         date: Date;
         time: string;
         message: string;
     }];
-    status: TaskStatus;
 };
 
 const TaskSchema = new Schema({
