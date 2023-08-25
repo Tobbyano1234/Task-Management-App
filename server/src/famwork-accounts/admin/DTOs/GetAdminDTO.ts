@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb";
-import { User } from "../../../glide-entities";
+import { User } from "../../../famwork-entities";
 
 export type GetAdminDTO = {
   email?: string, 
-  adminID?: ObjectId,
+  adminID?: string | ObjectId,
   username?: string,
 };
 

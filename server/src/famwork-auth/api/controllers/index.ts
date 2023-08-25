@@ -5,95 +5,28 @@ import { Types } from 'mongoose';
 import { BaseController } from "../../../famwork-shared/api";
 import { LocalSignInDTO } from '../../DTOs/signIn.DTO';
 import { LocalSignUpAdminDTO, LocalSignUpBankInfoSellerDTO, LocalSignUpBusinessInfoSellerDTO, LocalSignUpBuyerDTO, LocalSignUpCreateSellerDTO } from '../../DTOs/signUp.DTO';
-import { LocalSignInBuyerService, LocalSignUpBuyerService, MailSendAdminOtpService, MailSendBuyerOtpService, MailSendSellerOtpService, MailVerifyAdminOtpService, MailVerifyBuyerOtpService, MailVerifySellerOtpService, ResetBuyerPasswordService } from '../../../glide-auth/services';
-import { MailSendOtpDTO } from '../../../glide-auth/DTOs/sendOtp.DTO';
-import { MailVerifyOtpDTO } from '../../../glide-auth/DTOs/verifyOtp.DTO';
-import { LoginStatusService } from '../../services/login.status.service';
-import { LoginStatusDTO } from '../../../glide-auth/DTOs/LoginStatusDTO';
-import { ResetPasswordDTO } from '../../../glide-auth/DTOs/passwordManager.DTO';
-import { LocalSignUpBankInfoSellerService, LocalSignUpBusinessInfoSellerService, LocalSignUpCreateSellerService } from '../../../glide-auth/services/local.signUp.seller.service';
-import { LocalSignInSellerService } from '../../../glide-auth/services/local.signIn.seller.service';
-import { ResetSellerPasswordService } from '../../../glide-auth/services/passwordManager.seller.service';
-import { LocalSignUpAdminService } from '../../../glide-auth/services/local.signUp.admin.service';
-import { LocalSignInAdminService } from '../../../glide-auth/services/local.signIn.admin.service';
+import { LocalSignInUserService, LocalSignUpBuyerService, LocalSignUpUserService, MailSendAdminOtpService, MailSendUserOtpService, MailSendSellerOtpService, MailVerifyAdminOtpService, MailVerifyBuyerOtpService, MailVerifySellerOtpService, ResetBuyerPasswordService, LocalSignUpAdminService, LocalSignInAdminService, MailVerifyUserOtpService, VerifyUserPasswordService, VerifyUserEmailService, ResetUserPasswordService, ChangeUserPasswordService } from '../../../famwork-auth/services';
+import { MailSendOtpDTO } from '../../../famwork-auth/DTOs/sendOtp.DTO';
+import { MailVerifyOtpDTO } from '../../../famwork-auth/DTOs/verifyOtp.DTO';
+import { LoginStatusService } from '../../../famwork-auth/services';
+import { LoginStatusDTO } from '../../../famwork-auth/DTOs/LoginStatusDTO';
+import { ChangeAdminPasswordDTO, ChangeUserPasswordDTO, ResetPasswordDTO, VerifyAdminEmailDTO, VerifyUserEmailDTO } from '../../../famwork-auth/DTOs/passwordManager.DTO';
+import { LocalSignUpUserDTO } from '../../../famwork-auth/DTOs/signUp.DTO';
+import { VerifyAdminPasswordService,VerifyAdminEmailService, ResetAdminPasswordService, ChangeAdminPasswordService } from '../../../famwork-auth/services/passwordManager.admin.service';
+
 export class AuthController {
-    static signUpBuyer = BaseController(
+    static signUpUser = BaseController(
         async (request: Request) => {
-            const LocalSignUpDTO = request.body as LocalSignUpBuyerDTO;
-            const { success, message, data } = await LocalSignUpBuyerService(LocalSignUpDTO);
+            const LocalSignUpDTO = request.body as LocalSignUpUserDTO;
+            const { success, message, data } = await LocalSignUpUserService(LocalSignUpDTO);
             return { status: success ? httpStatus.CREATED : httpStatus.BAD_REQUEST, message, data, };
-        }
-    );
-
-    static signUpBuyerGoogle = BaseController(
-        async (request: Request | any) => {
-            const buyer = request.user; // Access the session object from the request object
-            const { success, message, token } = buyer;
-            if (buyer) {
-                return {
-                    status: success ? httpStatus.OK : httpStatus.BAD_REQUEST,
-                    message,
-                    data: token,
-                    redirect: { url: "http://localhost:5173/" + token },
-                    // redirect: { url: "https://glidehq-buyer-portal.onrender.com", token },
-                };
-            } else {
-                // Handle the case where buyer account creation failed
-                return {
-                    status: 400,
-                    message: "failed to create buyer account",
-                };
-            }
-        }
-    );
-
-    // static signUpBuyerGoogle = BaseController(
-    //     async (request: Request) => {
-    //         console.log("req", request)
-    //         const buyer = request.user; // Access the session object from the request object
-    //         const { success, message } = buyer;
-    //         if (buyer) {
-    //             return {
-    //                 status: success ? httpStatus.OK : httpStatus.BAD_REQUEST,
-    //                 message,
-    //                 data: buyer,
-    //                 redirect: { url: "https://glidehq-buyer-portal.onrender.com" },
-    //             };
-    //         } else {
-    //             // Handle the case where buyer account creation failed
-    //             return {
-    //                 status: 400,
-    //                 message: "failed to create buyer account",
-    //             };
-    //         }
-    //     }
-    // );
-
-    static signUpBuyerFacebook = BaseController(
-        async (request: Request | any) => {
-            const buyer = request.user; // Access the session object from the request object
-            const { success, message } = buyer;
-            if (buyer) {
-                return {
-                    status: success ? httpStatus.OK : httpStatus.BAD_REQUEST,
-                    message,
-                    data: buyer,
-                    redirect: { url: "https://glidehq-buyer-portal.onrender.com" },
-                };
-            } else {
-                // Handle the case where buyer account creation failed
-                return {
-                    status: 400,
-                    message: "failed to create buyer account",
-                };
-            }
         }
     );
 
     static signInBuyer = BaseController(
         async (request: Request) => {
             const LocalSignInDTO = request.body as LocalSignInDTO;
-            const { success, message, data, token } = await LocalSignInBuyerService(LocalSignInDTO);
+            const { success, message, data, token } = await LocalSignInUserService(LocalSignInDTO);
             return { status: success ? httpStatus.OK : httpStatus.UNAUTHORIZED, message, data, token };
         }
     );
@@ -101,11 +34,8 @@ export class AuthController {
     static signInStatus = BaseController(
         async (request: Request) => {
             const LoginStatusDTO = request.body as LoginStatusDTO;
-            if (LoginStatusDTO.buyerID) {
-                LoginStatusDTO.buyerID = new Types.ObjectId(LoginStatusDTO.buyerID);
-            }
-            if (LoginStatusDTO.sellerID) {
-                LoginStatusDTO.sellerID = new Types.ObjectId(LoginStatusDTO.sellerID);
+            if (LoginStatusDTO.userID) {
+                LoginStatusDTO.userID = new Types.ObjectId(LoginStatusDTO.userID);
             }
             if (LoginStatusDTO.adminID) {
                 LoginStatusDTO.adminID = new Types.ObjectId(LoginStatusDTO.adminID);
@@ -131,42 +61,10 @@ export class AuthController {
         }
     );
 
-    static signUpCreateSeller = BaseController(
-        async (request: Request) => {
-            const LocalSignUpSellerDTO = request.body as LocalSignUpCreateSellerDTO;
-            const { success, message, data } = await LocalSignUpCreateSellerService(LocalSignUpSellerDTO)
-            return { status: success ? httpStatus.CREATED : httpStatus.BAD_REQUEST, message, data };
-        }
-    );
-
-    static signUpBusinessInfoSeller = BaseController(
-        async (request: Request) => {
-            const LocalSignUpSellerDTO = request.body as LocalSignUpBusinessInfoSellerDTO;
-            const { success, message, data } = await LocalSignUpBusinessInfoSellerService(LocalSignUpSellerDTO)
-            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-        }
-    );
-
-    static signUpBankInfoSeller = BaseController(
-        async (request: Request) => {
-            const LocalSignUpSellerDTO = request.body as LocalSignUpBankInfoSellerDTO;
-            const { success, message, data } = await LocalSignUpBankInfoSellerService(LocalSignUpSellerDTO)
-            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-        }
-    );
-
-    static signInSeller = BaseController(
-        async (request: Request) => {
-            const LocalSignInDTO = request.body as LocalSignInDTO;
-            const { success, message, data, token } = await LocalSignInSellerService(LocalSignInDTO);
-            return { status: success ? httpStatus.OK : httpStatus.UNAUTHORIZED, message, data, token };
-        }
-    );
-
     static sendBuyerOTP = BaseController(
         async (request: Request) => {
             const MailSendOtpDTO = request.body as MailSendOtpDTO;
-            const { success, message, data } = await MailSendBuyerOtpService(MailSendOtpDTO);
+            const { success, message, data } = await MailSendUserOtpService(MailSendOtpDTO);
             return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
         }
     );
@@ -179,18 +77,10 @@ export class AuthController {
         }
     );
 
-    static sendSellerOTP = BaseController(
-        async (request: Request) => {
-            const MailSendOtpDTO = request.body as MailSendOtpDTO;
-            const { success, message, data } = await MailSendSellerOtpService(MailSendOtpDTO);
-            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-        }
-    );
-
-    static verifyBuyerOTP = BaseController(
+    static verifyUserOTP = BaseController(
         async (request: Request) => {
             const MailVerifyOtpDTO = request.body as MailVerifyOtpDTO;
-            const { success, message, data, token } = await MailVerifyBuyerOtpService(MailVerifyOtpDTO);
+            const { success, message, data, token } = await MailVerifyUserOtpService(MailVerifyOtpDTO);
             return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data, token };
         }
     );
@@ -203,160 +93,94 @@ export class AuthController {
         }
     );
 
-    static verifySellerOTP = BaseController(
+    static verifyUserPassword = BaseController(
         async (request: Request) => {
-            const MailVerifyOtpDTO = request.body as MailVerifyOtpDTO;
-            const { success, message, data, token } = await MailVerifySellerOtpService(MailVerifyOtpDTO);
-            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data, token };
-        }
-    );
-
-    // static verifyBuyerPassword = BaseController(
-    //     async (request: Request) => {
-    //         const VerifyPasswordDTO = request.body as VerifyBuyerPasswordDTO;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO: ['verify-user-password', VerifyPasswordDTO],
-    //             onSuccess: UserPasswordVerifyHook
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static verifyAdminPassword = BaseController(
-    //     async (request: Request) => {
-    //         const VerifyPasswordDTO = request.body as VerifyAdminPasswordDTO;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO: ['verify-admin-password', VerifyPasswordDTO],
-    //             onSuccess: AdminPasswordVerifyHook
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static verifySellerPassword = BaseController(
-    //     async (request: Request) => {
-    //         const VerifyPasswordDTO = request.body as VerifySellerPasswordDTO;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO: ['verify-company-password', VerifyPasswordDTO],
-    //             onSuccess: CompanyPasswordVerifyHook
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static verifyBuyerEmail = BaseController(
-    //     async (request: Request) => {
-    //         const VerifyEmailDTO = request.body as VerifyBuyerEmailDTO;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO:
-    //                 ['verify-user-email', VerifyEmailDTO], onSuccess: () => { }
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static verifyAdminEmail = BaseController(
-    //     async (request: Request) => {
-    //         const VerifyEmailDTO = request.body as VerifyAdminEmailDTO;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO:
-    //                 ['verify-admin-email', VerifyEmailDTO], onSuccess: () => { }
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static verifySellerEmail = BaseController(
-    //     async (request: Request) => {
-    //         const VerifyEmailDTO = request.body as VerifySellerEmailDTO;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO:
-    //                 ['verify-company-email', VerifyEmailDTO], onSuccess: () => { }
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static changeBuyerPassword = BaseController(
-    //     async (request: Request) => {
-    //         const ChangePasswordDTO = request.body as ChangeBuyerPasswordDTO;
-    //         ChangePasswordDTO.userID = request.token._id;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO: ['change-user-password', ChangePasswordDTO],
-    //             onSuccess: UserPasswordChangedHook
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static changeAdminPassword = BaseController(
-    //     async (request: Request) => {
-    //         const ChangePasswordDTO = request.body as ChangeAdminPasswordDTO;
-    //         ChangePasswordDTO.adminID = request.token._id;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO: ['change-admin-password', ChangePasswordDTO],
-    //             onSuccess: AdminPasswordChangedHook
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    // static changeSellerPassword = BaseController(
-    //     async (request: Request) => {
-    //         const ChangePasswordDTO = request.body as ChangeSellerPasswordDTO;
-    //         ChangePasswordDTO.companyID = request.token._id;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO: ['change-company-password', ChangePasswordDTO],
-    //             onSuccess: CompanyPasswordChangedHook
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    static resetBuyerPassword = BaseController(
-        async (request: Request) => {
-            const ResetPasswordDTO = request.body as ResetPasswordDTO;
-            const { success, message, data } = await ResetBuyerPasswordService(ResetPasswordDTO);
+            const VerifyPasswordDTO = request.body as VerifyUserPasswordDTO;
+            const { success, message, data } = await VerifyUserPasswordService(VerifyPasswordDTO);
             return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
         }
     );
 
-    // static resetAdminPassword = BaseController(
-    //     async (request: Request) => {
-    //         const ResetPasswordDTO = request.body as ResetPasswordDTO;
-    //         const { success, message, data } = (await PasswordManagerModule({
-    //             DTO: ['reset-admin-password', ResetPasswordDTO],
-    //             onSuccess: AdminPasswordChangedHook
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
-
-    static resetSellerPassword = BaseController(
+    static verifyAdminPassword = BaseController(
         async (request: Request) => {
-            const ResetPasswordDTO = request.body as ResetPasswordDTO;
-            const { success, message, data } = await ResetSellerPasswordService(ResetPasswordDTO);
+            const VerifyPasswordDTO = request.body as VerifyAdminPasswordDTO;
+            const { success, message, data } = await VerifyAdminPasswordService(VerifyPasswordDTO);
             return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
         }
     );
 
-    // static suspendUserAccount = BaseController(
-    //     async (request: Request) => {
-    //         const UserSuspendAccountDTO = request.body as UserSuspendAccountDTO;
-    //         const { success, message, data } = (await SuspendAccountModule({
-    //             DTO:
-    //                 ['user', UserSuspendAccountDTO], onSuccess: () => { }
-    //         }))!;
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
+    static verifyUserEmail = BaseController(
+        async (request: Request) => {
+            const VerifyEmailDTO = request.body as VerifyUserEmailDTO;
+            const { success, message, data } = await VerifyUserEmailService(VerifyEmailDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
 
-    // static deactivateAccount = BaseController(
-    //     async (request: Request) => {
-    //         const DeactivateAccountDTO = request.body as DeactivateAccountDTO;
-    //         DeactivateAccountDTO.userID = request.token._id;
-    //         const { success, message, data } = await DeactivateAccountModule({ DTO: ['user', DeactivateAccountDTO], onSuccess: UserDeactivateAccountHook });
-    //         return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
-    //     }
-    // );
+    static verifyAdminEmail = BaseController(
+        async (request: Request) => {
+            const VerifyEmailDTO = request.body as VerifyAdminEmailDTO;
+            const { success, message, data } = await VerifyAdminEmailService(VerifyEmailDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
+
+    static changeUserPassword = BaseController(
+        async (request: Request) => {
+            const ChangePasswordDTO = request.body as ChangeUserPasswordDTO;
+            ChangePasswordDTO.userID = request.token._id;
+            const { success, message, data } = await ChangeUserPasswordService(ChangePasswordDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
+
+    static changeAdminPassword = BaseController(
+        async (request: Request) => {
+            const ChangePasswordDTO = request.body as ChangeAdminPasswordDTO;
+            ChangePasswordDTO.adminID = request.token._id;
+            const { success, message, data } = await ChangeAdminPasswordService(ChangePasswordDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
+
+    static resetUserPassword = BaseController(
+        async (request: Request) => {
+            const ResetPasswordDTO = request.body as ResetPasswordDTO;
+            const { success, message, data } = await ResetUserPasswordService(ResetPasswordDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
+
+    static resetAdminPassword = BaseController(
+        async (request: Request) => {
+            const ResetPasswordDTO = request.body as ResetPasswordDTO;
+            const { success, message, data } = await ResetAdminPasswordService(ResetPasswordDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
+
+    static suspendUserAccount = BaseController(
+        async (request: Request) => {
+            const UserSuspendAccountDTO = request.body as UserSuspendAccountDTO;
+            const { success, message, data } = await SuspendUserAccountService(UserSuspendAccountDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
+
+    static deleteUserAccount = BaseController(
+        async (request: Request) => {
+            const UserSuspendAccountDTO = request.body as UserSuspendAccountDTO;
+            const { success, message, data } = await DeleteUserAccountService(UserSuspendAccountDTO);
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
+
+    static deactivateAccount = BaseController(
+        async (request: Request) => {
+            const DeactivateAccountDTO = request.body as DeactivateAccountDTO;
+            DeactivateAccountDTO.userID = request.token._id;
+            const { success, message, data } = await DeactivateAccountService({DeactivateAccountDTO, onSuccess: UserDeactivateAccountHook });
+            return { status: success ? httpStatus.OK : httpStatus.BAD_REQUEST, message, data };
+        }
+    );
 }

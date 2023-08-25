@@ -25,6 +25,12 @@ export const config: ConfigTypes = {
             },
         },
     },
+    credentials: {
+        jwt: {
+            secret: envVariables.JWT_SECRET,
+            expirationInterval: envVariables.JWT_EXPIRY,
+        },
+    },
     defaults:{
         saltWorker: envVariables.SALT_WORKER,
     }
