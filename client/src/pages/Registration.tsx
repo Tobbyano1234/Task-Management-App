@@ -1,16 +1,16 @@
 import InputField from "../components/common/Input";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button";
 
-interface IUser {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+// interface IUser {
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   email: string;
+//   password: string;
+//   confirmPassword: string;
+// }
 
 const UserRegistrationForm = (): JSX.Element => {
   // const [formData, setFormData] = useState<IUser | null>({});

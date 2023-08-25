@@ -9,7 +9,7 @@ const TaskList = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
-  };
+  }
 
   const closeModal = () => {
     setIsModalOpen(false);
