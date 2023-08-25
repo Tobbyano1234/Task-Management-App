@@ -40,8 +40,8 @@ POST('/reset-password-buyer', [ /*changePasswordRateLimiter,*/
 POST('/reset-password-admin', [ /*changePasswordRateLimiter,*/
     baseValidation(authValidation.resetPasswordAdmin), AuthController.resetAdminPassword]);
 
-POST('/deactivate-account-user', [ /*changePasswordRateLimiter,*/
-    baseValidation(authValidation.deactivateAccount), AuthMiddleware.baseAuthToken, AuthMiddleware.IsUserMiddleware, AuthController.deactivateAccount]);
-POST('/suspendAccount/user/:accountID', [AuthMiddleware.baseAuthToken, AuthMiddleware.IsAdminMiddleware, AuthController.suspendUserAccount]);
+// POST('/deactivate-account-user', [ /*changePasswordRateLimiter,*/
+//     baseValidation(authValidation.deactivateAccount), AuthMiddleware.baseAuthToken, AuthMiddleware.IsUserMiddleware, AuthController.deactivateAccount]);
+// POST('/suspendAccount/user/:accountID', [AuthMiddleware.baseAuthToken, AuthMiddleware.IsAdminMiddleware, AuthController.suspendUserAccount]);
 
 export default router;

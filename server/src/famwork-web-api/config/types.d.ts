@@ -10,11 +10,21 @@ export type ConfigTypes = {
     credentials: {
         jwt: IJWT;
     },
+    client:{
+        mediaClient:{},
+        mailClient:{
+            nodemailer:INodemailer;
+        }
+    }
     defaults: {
         saltWorker: number;
     }
 };
 
+interface INodemailer {
+        authMail:string;
+        authPassword:string;
+}
 interface IJWT {
     secret: string;
     expirationInterval: string;

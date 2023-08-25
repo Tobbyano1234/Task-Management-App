@@ -1,7 +1,6 @@
 import { GetUserDTO, GetUserOptions } from "../DTOs/GetUserDTO";
 import { User, UserModel } from "../../../famwork-entities";
 
-
 export const getUserService = async ({ email, userID }: GetUserDTO, { onUserNotFound = ({ email, userID }: GetUserDTO): void => { throw new Error(`user ${email || userID} not found`) }, withPassword = false }: GetUserOptions) => {
 
     let user;
