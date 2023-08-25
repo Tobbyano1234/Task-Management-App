@@ -17,7 +17,7 @@ const TaskList = () => {
 
   return (
     <Fragment>
-      <main className="container my-5 mx-5">
+      <main className="my-5 px-5">
         <div className="flex items-center justify-between space-x-4">
           <Button
             className="bg-indigo-600 font-custom text-sm text-white rounded-lg px-5 py-2 hover:bg-indigo-900"
@@ -134,8 +134,12 @@ const TaskList = () => {
         </div>
 
         <div className="border-t-2 my-5 border-gray-200"></div>
-
+        <div className="flex flex-wrap gap-2 justify-center">
         <TaskCard />
+        <TaskCard />
+        <TaskCard />
+        <TaskCard />
+</div>
       </main>
     </Fragment>
   );

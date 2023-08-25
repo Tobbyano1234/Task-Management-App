@@ -17,7 +17,7 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-opacity-75 backdrop-blur-sm">
-      <div className="bg-white w-96 rounded-lg shadow-md p-6 overflow-auto">
+      <div className="bg-white max-w-[24rem] rounded-lg shadow-md p-6">
         <h2 className="text-lg font-semibold mb-4">{title}</h2>
         <p className="mb-4">{description}</p>
         <div className="flex justify-end">
